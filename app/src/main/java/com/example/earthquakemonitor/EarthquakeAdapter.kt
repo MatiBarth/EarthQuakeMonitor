@@ -36,10 +36,10 @@ class EarthquakeAdapter :
     }
 
     inner class EarthquakeHolder(private val binding: EarthQuakeListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(earthquake: Earthquake) {
-            binding.earthQuakeMagnitudeText.text = earthquake.magnitude.toString()
-            binding.earthQuakePlaceText.text = earthquake.place
+            RecyclerView.ViewHolder(binding.root) {
+                fun bind(earthquake: Earthquake) {
+                    binding.earthQuakeMagnitudeText.text = earthquake.magnitude.toString()
+                    binding.earthQuakePlaceText.text = earthquake.place
         }
     }
 }

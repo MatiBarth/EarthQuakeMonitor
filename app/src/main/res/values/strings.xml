@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Earth Quake Monitor</string>
+    <string name="earth_quake_empty_view">No se registran terremotos en este momento</string>
 </resources>
