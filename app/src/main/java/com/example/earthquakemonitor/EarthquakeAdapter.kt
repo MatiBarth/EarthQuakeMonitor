@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.earthquakemonitor.databinding.EarthQuakeListItemBinding
 
 private val TAG = EarthquakeAdapter::class.java.simpleName
+
 class EarthquakeAdapter :
     ListAdapter<Earthquake, EarthquakeAdapter.EarthquakeHolder>(DiffCallback) {
 
@@ -41,17 +42,17 @@ class EarthquakeAdapter :
     }
 
     inner class EarthquakeHolder(private val binding: EarthQuakeListItemBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-                fun bind(earthquake: Earthquake) {
-                    binding.earthQuakeMagnitudeText.text = earthquake.magnitude.toString()
-                    binding.earthQuakePlaceText.text = earthquake.place
-                    binding.root.setOnClickListener{
-                        if(::onItemClickListener.isInitialized){
-                            onItemClickListener(earthquake)
-                        } else {
-                            Log.e(TAG, "onItemClickListener no esta inicializado")
-                        }
-                    }
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(earthquake: Earthquake) {
+            binding.earthQuakeMagnitudeText.text = earthquake.magnitude.toString()
+            binding.earthQuakePlaceText.text = earthquake.place
+            binding.root.setOnClickListener {
+                if (::onItemClickListener.isInitialized) {
+                    onItemClickListener(earthquake)
+                } else {
+                    Log.e(TAG, "onItemClickListener no esta inicializado")
+                }
+            }
         }
     }
 }
