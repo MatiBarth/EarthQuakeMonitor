@@ -3,23 +3,18 @@ package com.example.earthquakemonitor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 
 class MainViewModel: ViewModel() {
-    private val job = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.Main + job)
-
     private var _earthQuakeList = MutableLiveData<MutableList<Earthquake>>()
     val earthquakeList: LiveData<MutableList<Earthquake>>
     get() = _earthQuakeList
-
     init {
-        coroutineScope.launch {
-
+        viewModelScope.launch {
             _earthQuakeList.value = fetchEarthQuakes()
         }
     }
-
     private suspend fun fetchEarthQuakes(): MutableList<Earthquake> {
         return withContext(Dispatchers.IO){
             val earthQuakeList: MutableList<Earthquake> = mutableListOf<Earthquake>()
@@ -33,10 +28,4 @@ class MainViewModel: ViewModel() {
             earthQuakeList
         }
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
-    }
-
 }
