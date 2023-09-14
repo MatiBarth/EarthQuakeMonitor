@@ -7,6 +7,5 @@ data class Earthquake(
     val time: Long,
     val longitude: Double,
     val latitude: Double
-) {
+)
 
-}

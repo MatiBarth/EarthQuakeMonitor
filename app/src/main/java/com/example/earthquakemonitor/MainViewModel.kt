@@ -22,34 +22,28 @@ class MainViewModel : ViewModel() {
 
     private suspend fun fetchEarthQuakes(): MutableList<Earthquake> {
         return withContext(Dispatchers.IO) {
-            val earthQuakeListString = service.getLastHourEarthQuakes()
-            val eqList = parseEarthQuakeResult(earthQuakeListString)
+            val earthQuakeJsonResponse = service.getLastHourEarthQuakes()
+            val eqList = parseEarthQuakeResult(earthQuakeJsonResponse)
             eqList
         }
     }
 
-    private fun parseEarthQuakeResult(earthQuakeListString: String): MutableList<Earthquake> {
-        val eqJsonObject = JSONObject(earthQuakeListString)
-        val featuresJsonArray: JSONArray = eqJsonObject.getJSONArray("features")
-
+    private fun parseEarthQuakeResult(earthQuakeJsonResponse: EarthQuakeJsonResponse): MutableList<Earthquake> {
         val eqList = mutableListOf<Earthquake>()
+        val featureList = earthQuakeJsonResponse.features
 
-        for (i in 0 until featuresJsonArray.length()) {
-            val featuresJSONObject = featuresJsonArray[i] as JSONObject
-            val id = featuresJSONObject.getString("id")
+        for(feature in featureList){
+            val properties = feature.properties
+            val id = feature.id
+            val magnitude = properties.mag
+            val place = properties.place
+            val time = properties.time
 
-            val propertiesJsonObject = featuresJSONObject.getJSONObject("properties")
-            val magnitude = propertiesJsonObject.getDouble("mag")
-            val place = propertiesJsonObject.getString("place")
-            val time = propertiesJsonObject.getLong("time")
+            val geometry = feature.geometry
+            val longitude = geometry.longitude
+            val latitude = geometry.latitude
 
-            val geometryJsonObject = featuresJSONObject.getJSONObject("geometry")
-            val coordinatesJsonArray = geometryJsonObject.getJSONArray("coordinates")
-            val longitude = coordinatesJsonArray.getDouble(0)
-            val latitude = coordinatesJsonArray.getDouble(1)
-
-            val earthquake = Earthquake(id, place, magnitude, time, longitude, latitude)
-            eqList.add(earthquake)
+            eqList.add(Earthquake(id,place,magnitude,time,longitude,latitude))
         }
         return eqList
     }
