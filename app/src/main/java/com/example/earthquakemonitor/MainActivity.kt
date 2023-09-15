@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding.earthQuakeRecycler.layoutManager = LinearLayoutManager(this)
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val adapter = EarthquakeAdapter()
+        val adapter = EarthquakeAdapter(this)
         binding.earthQuakeRecycler.adapter = adapter
 
         viewModel.earthquakeList.observe(this, Observer { eqList ->
