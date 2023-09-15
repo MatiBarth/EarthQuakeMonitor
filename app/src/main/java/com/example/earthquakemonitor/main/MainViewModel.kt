@@ -1,13 +1,11 @@
-package com.example.earthquakemonitor
+package com.example.earthquakemonitor.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.*
-import org.json.JSONArray
-import org.json.JSONObject
+import com.example.earthquakemonitor.Earthquake
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private var _earthQuakeList = MutableLiveData<MutableList<Earthquake>>()

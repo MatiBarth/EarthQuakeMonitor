@@ -1,5 +1,8 @@
-package com.example.earthquakemonitor
+package com.example.earthquakemonitor.main
 
+import com.example.earthquakemonitor.api.EarthQuakeJsonResponse
+import com.example.earthquakemonitor.Earthquake
+import com.example.earthquakemonitor.api.service
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -27,7 +30,7 @@ class MainRepository {
             val longitude = geometry.longitude
             val latitude = geometry.latitude
 
-            eqList.add(Earthquake(id,place,magnitude,time,longitude,latitude))
+            eqList.add(Earthquake(id, place, magnitude, time, longitude, latitude))
         }
         return eqList
     }

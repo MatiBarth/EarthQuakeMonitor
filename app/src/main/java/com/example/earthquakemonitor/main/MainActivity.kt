@@ -1,12 +1,13 @@
-package com.example.earthquakemonitor
+package com.example.earthquakemonitor.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.earthquakemonitor.Earthquake
 import com.example.earthquakemonitor.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
