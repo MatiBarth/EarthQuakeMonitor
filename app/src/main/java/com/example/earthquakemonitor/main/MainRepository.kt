@@ -3,10 +3,11 @@ package com.example.earthquakemonitor.main
 import com.example.earthquakemonitor.api.EarthQuakeJsonResponse
 import com.example.earthquakemonitor.Earthquake
 import com.example.earthquakemonitor.api.service
+import com.example.earthquakemonitor.database.EarthQuakeDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MainRepository {
+class MainRepository(private val database: EarthQuakeDatabase) {
     suspend fun fetchEarthQuakes(): MutableList<Earthquake> {
         return withContext(Dispatchers.IO) {
             val earthQuakeJsonResponse = service.getLastHourEarthQuakes()
