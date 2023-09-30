@@ -1,5 +1,6 @@
 package com.example.earthquakemonitor.main
 
+import androidx.lifecycle.LiveData
 import com.example.earthquakemonitor.api.EarthQuakeJsonResponse
 import com.example.earthquakemonitor.Earthquake
 import com.example.earthquakemonitor.api.service
@@ -8,7 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class MainRepository(private val database: EarthQuakeDatabase) {
-    suspend fun fetchEarthQuakes(): MutableList<Earthquake> {
+
+    val eqList: LiveData<MutableList<Earthquake>> = database.eqDao.getEarthquakes()
+
+    suspend fun fetchEarthQuakes() /* (No es necesario al implementar LiveData) : MutableList<Earthquake> */ {
         return withContext(Dispatchers.IO) {
             val earthQuakeJsonResponse = service.getLastHourEarthQuakes()
             val eqList = parseEarthQuakeResult(earthQuakeJsonResponse)
@@ -16,9 +20,12 @@ class MainRepository(private val database: EarthQuakeDatabase) {
             //Guardar todos los terremotos en la base de datos
             database.eqDao.insertAll(eqList)
 
+         /* Con LiveData en DAO ya no es necesario devolver estos datos
             //Tomamos los terremotos de la base de datos y ya no directo desde la api
             val earthquakes = database.eqDao.getEarthquakes()
             earthquakes
+        */
+
         }
     }
 

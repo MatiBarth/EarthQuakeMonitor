@@ -7,17 +7,19 @@ import com.example.earthquakemonitor.database.getDatabase
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    private var _earthQuakeList = MutableLiveData<MutableList<Earthquake>>()
-    val earthquakeList: LiveData<MutableList<Earthquake>>
-        get() = _earthQuakeList
-
     private val database = getDatabase(application)
     private val repository = MainRepository(database)
+
+    /*    private var _earthQuakeList = MutableLiveData<MutableList<Earthquake>>()  */
+    val earthquakeList = repository.eqList
+    /*  REEMPLAZO AL INGRESAR LIVEDATA en DAO
+    : LiveData<MutableList<Earthquake>>
+        get() = _earthQuakeList   */
+
     init {
         viewModelScope.launch {
-            _earthQuakeList.value = repository.fetchEarthQuakes()
+            /*    _earthQuakeList.value = */
+            repository.fetchEarthQuakes()
         }
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.example.earthquakemonitor.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -14,5 +15,5 @@ interface EarthQuakeDAO {
     fun insertAll(eqList: MutableList<Earthquake>)
 
     @Query("Select * From earthquakes")
-    fun getEarthquakes(): MutableList<Earthquake>
+    fun getEarthquakes(): LiveData<MutableList<Earthquake>>
 }
