@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.earthquakemonitor.Earthquake
+import com.example.earthquakemonitor.api.ApiStatusResponse
 import com.example.earthquakemonitor.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.earthQuakeRecycler.layoutManager = LinearLayoutManager(this)
-        val viewModel = ViewModelProvider(this, MainViewModelFactory(application)).get(MainViewModel::class.java)
+        val viewModel = ViewModelProvider(
+            this,
+            MainViewModelFactory(application)
+        ).get(MainViewModel::class.java)
 
         val adapter = EarthquakeAdapter(this)
         binding.earthQuakeRecycler.adapter = adapter
@@ -29,6 +33,21 @@ class MainActivity : AppCompatActivity() {
 
             handleEmptyView(eqList)
         })
+
+        // Rueda de progreso
+        viewModel.status.observe(
+            this,
+            Observer { apiStatusResponse ->
+                if (apiStatusResponse == ApiStatusResponse.LOADING) {
+                    binding.loadingWheel.visibility = View.VISIBLE
+                } else if (apiStatusResponse == ApiStatusResponse.DONE) {
+                    binding.loadingWheel.visibility = View.GONE
+                } else if (apiStatusResponse == ApiStatusResponse.NOT_INTERNET_CONNECTION) {
+                    binding.loadingWheel.visibility = View.GONE
+                } else if (apiStatusResponse == ApiStatusResponse.ERROR) {
+                    binding.loadingWheel.visibility = View.GONE
+                }
+            })
 
         adapter.onItemClickListener = {
             Toast.makeText(this, it.place, Toast.LENGTH_SHORT).show()
