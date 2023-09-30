@@ -12,7 +12,13 @@ class MainRepository(private val database: EarthQuakeDatabase) {
         return withContext(Dispatchers.IO) {
             val earthQuakeJsonResponse = service.getLastHourEarthQuakes()
             val eqList = parseEarthQuakeResult(earthQuakeJsonResponse)
-            eqList
+
+            //Guardar todos los terremotos en la base de datos
+            database.eqDao.insertAll(eqList)
+
+            //Tomamos los terremotos de la base de datos y ya no directo desde la api
+            val earthquakes = database.eqDao.getEarthquakes()
+            earthquakes
         }
     }
 
