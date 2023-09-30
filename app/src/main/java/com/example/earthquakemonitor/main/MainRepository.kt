@@ -12,20 +12,13 @@ class MainRepository(private val database: EarthQuakeDatabase) {
 
     val eqList: LiveData<MutableList<Earthquake>> = database.eqDao.getEarthquakes()
 
-    suspend fun fetchEarthQuakes() /* (No es necesario al implementar LiveData) : MutableList<Earthquake> */ {
+    suspend fun fetchEarthQuakes() {
         return withContext(Dispatchers.IO) {
             val earthQuakeJsonResponse = service.getLastHourEarthQuakes()
             val eqList = parseEarthQuakeResult(earthQuakeJsonResponse)
 
             //Guardar todos los terremotos en la base de datos
             database.eqDao.insertAll(eqList)
-
-         /* Con LiveData en DAO ya no es necesario devolver estos datos
-            //Tomamos los terremotos de la base de datos y ya no directo desde la api
-            val earthquakes = database.eqDao.getEarthquakes()
-            earthquakes
-        */
-
         }
     }
 
@@ -33,13 +26,12 @@ class MainRepository(private val database: EarthQuakeDatabase) {
         val eqList = mutableListOf<Earthquake>()
         val featureList = earthQuakeJsonResponse.features
 
-        for(feature in featureList){
+        for (feature in featureList) {
             val properties = feature.properties
             val id = feature.id
             val magnitude = properties.mag
             val place = properties.place
             val time = properties.time
-
             val geometry = feature.geometry
             val longitude = geometry.longitude
             val latitude = geometry.latitude
