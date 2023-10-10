@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="size_tv_magnitude">72sp</dimen>
+    <dimen name="constraint_padding">16dp</dimen>
+    <dimen name="magnitude_margin_top">56dp</dimen>
+    <dimen name="size_text_scale">24sp</dimen>
+    <dimen name="margin_left_tv_scale_text">16dp</dimen>
+    <dimen name="padding_top_tv_scale_text">46dp</dimen>
+</resources>
