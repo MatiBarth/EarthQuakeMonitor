@@ -1,5 +1,6 @@
 package com.example.earthquakemonitor.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -7,6 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.earthquakemonitor.DetailActivity
+import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_LATITUDE_KEY
+import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_LONGITUDE_KEY
+import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_MAGNITUDE_KEY
+import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_PLACE_KEY
+import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_TIME_KEY
 import com.example.earthquakemonitor.Earthquake
 import com.example.earthquakemonitor.api.ApiStatusResponse
 import com.example.earthquakemonitor.databinding.ActivityMainBinding
@@ -50,7 +57,13 @@ class MainActivity : AppCompatActivity() {
             })
 
         adapter.onItemClickListener = {
-            Toast.makeText(this, it.place, Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(EARTHQUAKE_PLACE_KEY, it.place)
+            intent.putExtra(EARTHQUAKE_MAGNITUDE_KEY, it.magnitude)
+            intent.putExtra(EARTHQUAKE_LONGITUDE_KEY, it.longitude)
+            intent.putExtra(EARTHQUAKE_LATITUDE_KEY, it.latitude)
+            intent.putExtra(EARTHQUAKE_TIME_KEY, it.time)
+            startActivity(intent)
         }
     }
 
