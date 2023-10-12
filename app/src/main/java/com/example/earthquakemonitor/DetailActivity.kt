@@ -30,12 +30,12 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel = DetailViewModel()
 
         val place = intent.getStringExtra(EARTHQUAKE_PLACE_KEY)
-        val magnitude = intent.getDoubleExtra(EARTHQUAKE_MAGNITUDE_KEY, 0.0)
+        val magnitude = String.format("%.2f",intent.getDoubleExtra(EARTHQUAKE_MAGNITUDE_KEY, 0.0))
         val time = intent.getLongExtra(EARTHQUAKE_TIME_KEY, 0)
         val longitude = intent.getDoubleExtra(EARTHQUAKE_LONGITUDE_KEY, 0.0)
         val latitude = intent.getDoubleExtra(EARTHQUAKE_LATITUDE_KEY, 0.0)
 
-        binding.tvMagnitude.text = magnitude.toString()
+        binding.tvMagnitude.text = magnitude
         binding.tvLatitudeEdit.text = latitude.toString()
         binding.tvLongitudeEdit.text = longitude.toString()
         binding.tvLocation.text = place.toString()
