@@ -10,15 +10,19 @@ import kotlinx.coroutines.withContext
 
 class MainRepository(private val database: EarthQuakeDatabase) {
 
-    val eqList: LiveData<MutableList<Earthquake>> = database.eqDao.getEarthquakes()
-
-    suspend fun fetchEarthQuakes() {
+    suspend fun fetchEarthQuakes(sortByMagnitude: Boolean): MutableList<Earthquake> {
         return withContext(Dispatchers.IO) {
             val earthQuakeJsonResponse = service.getLastHourEarthQuakes()
             val eqList = parseEarthQuakeResult(earthQuakeJsonResponse)
 
             //Guardar todos los terremotos en la base de datos
             database.eqDao.insertAll(eqList)
+
+            if (sortByMagnitude){
+                database.eqDao.getEarthquakesByMagnitude()
+            } else {
+                database.eqDao.getEarthquakes()
+            }
         }
     }
 

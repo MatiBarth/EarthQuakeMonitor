@@ -2,6 +2,9 @@ package com.example.earthquakemonitor.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +18,32 @@ import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_MAGNITU
 import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_PLACE_KEY
 import com.example.earthquakemonitor.DetailActivity.Companion.EARTHQUAKE_TIME_KEY
 import com.example.earthquakemonitor.Earthquake
+import com.example.earthquakemonitor.R
 import com.example.earthquakemonitor.api.ApiStatusResponse
 import com.example.earthquakemonitor.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_option,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+        if (itemId == R.id.main_menu_sort_magnitude) {
+            viewModel.reloadEartquakes(sortByMagnitude = true)
+            Log.d("MAGNITUDE","Se apreto el boton de warning")
+        }
+        else if (itemId == R.id.main_menu_sort_time) {
+            viewModel.reloadEartquakes(sortByMagnitude = false)
+            Log.d("TIME","Se apreto el boton del reloj")
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.earthQuakeRecycler.layoutManager = LinearLayoutManager(this)
-        val viewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             this,
             MainViewModelFactory(application)
         ).get(MainViewModel::class.java)
@@ -35,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = EarthquakeAdapter(this)
         binding.earthQuakeRecycler.adapter = adapter
 
-        viewModel.earthquakeList.observe(this, Observer { eqList ->
+        viewModel.eqList.observe(this, Observer { eqList ->
             adapter.submitList(eqList)
 
             handleEmptyView(eqList)

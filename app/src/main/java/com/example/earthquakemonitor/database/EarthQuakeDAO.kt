@@ -15,5 +15,11 @@ interface EarthQuakeDAO {
     fun insertAll(eqList: MutableList<Earthquake>)
 
     @Query("Select * From earthquakes")
-    fun getEarthquakes(): LiveData<MutableList<Earthquake>>
+    fun getEarthquakes(): MutableList<Earthquake>
+
+    @Query("Select * From earthquakes ORDER BY magnitude ASC")
+    fun getEarthquakesByMagnitude(): MutableList<Earthquake>
+
+    @Delete
+    fun deleteEarthquake(vararg eq: Earthquake)
 }
