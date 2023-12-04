@@ -24,6 +24,7 @@ class MainRepository(private val database: EarthQuakeDatabase) {
                 database.eqDao.getEarthquakes()
             }
         }
+
     }
 
     private fun parseEarthQuakeResult(earthQuakeJsonResponse: EarthQuakeJsonResponse): MutableList<Earthquake> {

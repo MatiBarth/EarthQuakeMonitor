@@ -7,19 +7,20 @@ import androidx.room.RoomDatabase
 import com.example.earthquakemonitor.Earthquake
 
 @Database(entities = [Earthquake::class], version = 1)
-abstract class EarthQuakeDatabase: RoomDatabase(){
+abstract class EarthQuakeDatabase : RoomDatabase() {
     abstract val eqDao: EarthQuakeDAO
 }
 
 private lateinit var INSTANCE: EarthQuakeDatabase
 
-fun getDatabase(context: Context): EarthQuakeDatabase{
-    synchronized(EarthQuakeDatabase::class.java){
-        if(!::INSTANCE.isInitialized){
+fun getDatabase(context: Context): EarthQuakeDatabase {
+    synchronized(EarthQuakeDatabase::class.java) {
+        if (!::INSTANCE.isInitialized) {
             INSTANCE = Room.databaseBuilder(
-            context.applicationContext,
-            EarthQuakeDatabase::class.java,
-            "earthquake_db").build()
+                context.applicationContext,
+                EarthQuakeDatabase::class.java,
+                "earthquake_db"
+            ).build()
         }
         return INSTANCE
     }
