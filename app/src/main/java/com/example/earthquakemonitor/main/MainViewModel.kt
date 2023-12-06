@@ -21,7 +21,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var _eqList = MutableLiveData<MutableList<Earthquake>>()
     val eqList: LiveData<MutableList<Earthquake>>
-    get() = eqList
+    get() = _eqList
 
     init {
         reloadEartquakes(false)

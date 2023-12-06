@@ -20,7 +20,8 @@ fun getDatabase(context: Context): EarthQuakeDatabase {
                 context.applicationContext,
                 EarthQuakeDatabase::class.java,
                 "earthquake_db"
-            ).build()
+            ).fallbackToDestructiveMigration()
+                .build()
         }
         return INSTANCE
     }
