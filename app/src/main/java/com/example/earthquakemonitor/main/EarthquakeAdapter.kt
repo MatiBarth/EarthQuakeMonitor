@@ -1,17 +1,16 @@
-package com.example.earthquakemonitor
+package com.example.earthquakemonitor.main
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.earthquakemonitor.Earthquake
+import com.example.earthquakemonitor.R
 import com.example.earthquakemonitor.databinding.EarthQuakeListItemBinding
-
-private val TAG = EarthquakeAdapter::class.java.simpleName
 
 class EarthquakeAdapter(private val context: Context) :
     ListAdapter<Earthquake, EarthquakeAdapter.EarthquakeHolder>(DiffCallback) {

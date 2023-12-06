@@ -1,4 +1,4 @@
-package com.example.earthquakemonitor
+package com.example.earthquakemonitor.api
 
 class Geometry(private val coordinates: Array<Double>) {
     val longitude: Double
