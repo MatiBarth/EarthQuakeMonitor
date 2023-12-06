@@ -19,13 +19,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDatabase(application)
     private val repository = MainRepository(database)
 
-    val earthquakeList = repository.eqList
+    private var _eqList = MutableLiveData<MutableList<Earthquake>>()
+    val eqList: LiveData<MutableList<Earthquake>>
+    get() = _eqList
 
     init {
+        reloadEartquakes(false)
+    }
+
+    fun reloadEartquakes(sortByMagnitude: Boolean) {
         viewModelScope.launch {
             try {
                 _status.value = ApiStatusResponse.LOADING
-                repository.fetchEarthQuakes()
+                _eqList.value = repository.fetchEarthQuakes(sortByMagnitude)
                 _status.value = ApiStatusResponse.DONE
             } catch (e: UnknownHostException) {
                 _status.value = ApiStatusResponse.NOT_INTERNET_CONNECTION
