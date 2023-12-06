@@ -11,16 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ProgressBar
+        android:id="@+id/loading_wheel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/earth_quake_empty_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:visibility="gone"
         android:layout_gravity="center"
-        android:textSize="24sp"
-        android:textColor="@color/black"
+        android:padding="16dp"
+        android:text="@string/earth_quake_empty_view"
         android:textAlignment="center"
-        android:text="@string/earth_quake_empty_view" />
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:visibility="gone" />
 
 </FrameLayout>
