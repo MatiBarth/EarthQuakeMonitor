@@ -11,7 +11,7 @@ import java.net.UnknownHostException
 
 private val TAG = MainViewModel::class.java.simpleName
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(application: Application, private val sortType: Boolean) : AndroidViewModel(application) {
     private val _status = MutableLiveData<ApiStatusResponse>()
     val status: LiveData<ApiStatusResponse>
         get() = _status
@@ -24,7 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     get() = _eqList
 
     init {
-        reloadEartquakes(false)
+        reloadEartquakes(sortType)
     }
 
     fun reloadEartquakes(sortByMagnitude: Boolean) {
