@@ -22,12 +22,14 @@ import com.example.earthquakemonitor.R
 import com.example.earthquakemonitor.api.ApiStatusResponse
 import com.example.earthquakemonitor.databinding.ActivityMainBinding
 
+const val SORT_TYPE_KEY = "sortType"
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_option,menu)
+        menuInflater.inflate(R.menu.menu_option, menu)
         return true
     }
 
@@ -35,14 +37,22 @@ class MainActivity : AppCompatActivity() {
         val itemId = item.itemId
         if (itemId == R.id.main_menu_sort_magnitude) {
             viewModel.reloadEartquakes(sortByMagnitude = true)
-            Log.d("MAGNITUDE","Se apreto el boton de warning")
-        }
-        else if (itemId == R.id.main_menu_sort_time) {
+            Log.d("MAGNITUDE", "Se apreto el boton de warning")
+            saveSortType(true)
+        } else if (itemId == R.id.main_menu_sort_time) {
             viewModel.reloadEartquakes(sortByMagnitude = false)
-            Log.d("TIME","Se apreto el boton del reloj")
+            Log.d("TIME", "Se apreto el boton del reloj")
+            saveSortType(false)
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveSortType(sortByMagnitude: Boolean) {
+        val prefs = getSharedPreferences("eq_preferences", MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean(SORT_TYPE_KEY, sortByMagnitude)
+        editor.apply()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,10 +60,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val sortType = getSortType()
+
         binding.earthQuakeRecycler.layoutManager = LinearLayoutManager(this)
         viewModel = ViewModelProvider(
             this,
-            MainViewModelFactory(application)
+            MainViewModelFactory(application, sortType)
         ).get(MainViewModel::class.java)
 
         val adapter = EarthquakeAdapter(this)
@@ -69,14 +81,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.status.observe(
             this,
             Observer { apiStatusResponse ->
-                if (apiStatusResponse == ApiStatusResponse.LOADING) {
-                    binding.loadingWheel.visibility = View.VISIBLE
-                } else if (apiStatusResponse == ApiStatusResponse.DONE) {
-                    binding.loadingWheel.visibility = View.GONE
-                } else if (apiStatusResponse == ApiStatusResponse.NOT_INTERNET_CONNECTION) {
-                    binding.loadingWheel.visibility = View.GONE
-                } else if (apiStatusResponse == ApiStatusResponse.ERROR) {
-                    binding.loadingWheel.visibility = View.GONE
+                when (apiStatusResponse) {
+                    ApiStatusResponse.LOADING -> binding.loadingWheel.visibility = View.VISIBLE
+                    else -> binding.loadingWheel.visibility = View.GONE
                 }
             })
 
@@ -89,6 +96,11 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(EARTHQUAKE_TIME_KEY, it.time)
             startActivity(intent)
         }
+    }
+
+    private fun getSortType(): Boolean {
+        val prefs = getSharedPreferences("eq_preferences", MODE_PRIVATE)
+        return prefs.getBoolean(SORT_TYPE_KEY, false)
     }
 
     private fun handleEmptyView(eqList: MutableList<Earthquake>) {
